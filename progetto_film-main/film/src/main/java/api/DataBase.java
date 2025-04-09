@@ -13,40 +13,85 @@ import com.mysql.cj.xdevapi.Statement;
 public class DataBase {
 	String url = "jdbc:mysql://localhost:3306/tepsit_film";
 	String username = "root";
-	String password= null;
+	String password = null;
 	java.sql.Statement st = null;
-    ResultSet rs = null;
-	
+	ResultSet rs = null;
+	Connection con = null;
+
 	public void conn() throws SQLException {
 		System.out.println("conn - begin");
-		Connection con = DriverManager.getConnection(url,username,password);
-		st=con.createStatement();
+		con = DriverManager.getConnection(url, username, password);
+		st = con.createStatement();
 		System.out.println("conn - end");
 	}
-	
-	public List<film> ricerca(String s) throws SQLException{
-		String query="SELECT * FROM movies WHERE name LIKE"+"'"+s+"%'";
-		rs=st.executeQuery(query);
-		film f=null;
-		List<film> films=new ArrayList<film>();
-		while(rs.next()) {
-			f=new film();
-			f.setName(rs.getString(1));
-			f.setRating(rs.getString(2));
-			f.setGenre(rs.getString(3));
-			f.setReleased(rs.getString(4));
-			f.setScore(rs.getInt(5));
-			f.setDirector(rs.getString(6));
-			f.setWriter(rs.getString(7));
-			f.setStar(rs.getString(8));
-			f.setCountry(rs.getString(9));
-			f.setBudget(rs.getInt(10));
-			f.setGross(rs.getInt(11));
-			f.setCompany(rs.getString(12));
-			f.setRuntime(rs.getInt(13));
+
+	public void discon() throws SQLException {
+		con.close();
+	}
+
+	public List<film> ricercaString(String col, String s) throws SQLException {
+		String query = "SELECT * FROM movies WHERE " + col + " LIKE" + "'" + s + "%'";
+		rs = st.executeQuery(query);
+		film f = null;
+		List<film> films = new ArrayList<film>();
+		while (rs.next()) {
+			f = new film();
+			f.setID(rs.getInt(1));
+			f.setName(rs.getString(2));
+			f.setRating(rs.getString(3));
+			f.setGenre(rs.getString(4));
+			f.setReleased(rs.getString(5));
+			f.setScore(rs.getInt(6));
+			f.setDirector(rs.getString(7));
+			f.setWriter(rs.getString(8));
+			f.setStar(rs.getString(9));
+			f.setCountry(rs.getString(10));
+			f.setBudget(rs.getInt(11));
+			f.setGross(rs.getInt(12));
+			f.setCompany(rs.getString(13));
+			f.setRuntime(rs.getInt(14));
 			films.add(f);
 		}
 		return films;
+
+	}
+	
+	public List<film> ricercaInt(String col, int s) throws SQLException {
+		String query = "SELECT * FROM movies WHERE " + col + " = " + s ;
+		rs = st.executeQuery(query);
+		film f = null;
+		List<film> films = new ArrayList<film>();
+		while (rs.next()) {
+			f = new film();
+			f.setID(rs.getInt(1));
+			f.setName(rs.getString(2));
+			f.setRating(rs.getString(3));
+			f.setGenre(rs.getString(4));
+			f.setReleased(rs.getString(5));
+			f.setScore(rs.getInt(6));
+			f.setDirector(rs.getString(7));
+			f.setWriter(rs.getString(8));
+			f.setStar(rs.getString(9));
+			f.setCountry(rs.getString(10));
+			f.setBudget(rs.getInt(11));
+			f.setGross(rs.getInt(12));
+			f.setCompany(rs.getString(13));
+			f.setRuntime(rs.getInt(14));
+			films.add(f);
+		}
+		return films;
+
+	}
+
+	public int insert(film f) throws SQLException {
+		String query = "INSERT INTO movies VALUES ('" + f.getName() + "', '" + f.getRating() + "', '" + f.getGenre()
+				+ "', '" + f.getReleased() + "', " + f.getScore() + ", '" + f.getDirector() + "', '" + f.getWriter()
+				+ "', '" + f.getStar() + "', '" + f.getCountry() + "', " + f.getBudget() + ", " + f.getGross() + ", '"
+				+ f.getCompany() + "', " + f.getRuntime() + ")";
+		rs = st.executeQuery(query);
+		
+		rs.last();
+		return rs.getInt("ID");
 		
 	}
 

@@ -1,6 +1,8 @@
 package api;
 
 public class film {
+	
+	int ID;
 	String name;
 	String rating;
 	String genre;
@@ -16,6 +18,14 @@ public class film {
 	int runtime;
 	
 	public film(){
+	}
+	
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int iD) {
+		ID = iD;
 	}
 
 	public String getName() {
