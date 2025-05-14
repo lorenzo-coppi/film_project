@@ -84,7 +84,7 @@ public class manager {
 	
 	@DELETE
 	@Path("delete/{id}")
-	public Response delete(@PathParam("{id}") int id) throws URISyntaxException, SQLException{
+	public Response delete(@PathParam("id") int id) throws URISyntaxException, SQLException{
 		
 		db.conn();
 		db.delete(id);
